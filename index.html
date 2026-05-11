@@ -343,7 +343,7 @@ const LANE_LERP    = 0.13;
 const SHOULDER_TOP = 74;
 const SHOULDER_BOT = 94;
 const SPIN_FRAMES  = 68;
-const SELF_MULT    = 1.8;
+const SELF_MULT    = 1.0;  // multiplier baked into game-loop steps below
 const MANUAL_SPEED_MULT   = 1.0;
 const AIASSIST_SPEED_MULT = 1.1;
 const SF_SPACING   = 430;
@@ -1119,9 +1119,9 @@ function loop() {
         const steps = Math.floor(S.elapsedMs / 3000);
         S.speed = Math.min(MAX_SPEED, BASE_SPEED * (1.20 + steps * 0.10));
       } else if (S.mode === 'selfDrive') {
-        // Ramp for first 10 s then hold — keeps the demo watchable
-        const SELF_RAMP_FRAMES = 600; // 10 seconds × 60 fps
-        S.speed = Math.min(MAX_SPEED, BASE_SPEED + Math.min(S.frame, SELF_RAMP_FRAMES) * SPEED_RAMP);
+        // Step up every 20 s for the first minute (3 steps), then hold
+        const steps = Math.min(3, Math.floor(S.elapsedMs / 20000));
+        S.speed = BASE_SPEED * (1.30 + steps * 0.08);
       } else {
         S.speed = Math.min(MAX_SPEED, BASE_SPEED + S.frame * SPEED_RAMP);
       }
