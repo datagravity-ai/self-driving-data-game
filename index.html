@@ -955,7 +955,7 @@ function checkCollisions() {
     if (Math.abs(ob.x - S.player.x) > HIT || Math.abs(ob.y - S.player.y) > HIT) continue;
 
     if (ob.type === 'cone') {
-      if (S.mode === 'selfDrive') { S.obstacles.splice(i, 1); continue; }
+      if (S.mode === 'selfDrive') continue; // autopilot never crashes — let cone scroll past
       if (S.shieldActive) { popShield(i); continue; }
       startSpinOut(); return;
 
